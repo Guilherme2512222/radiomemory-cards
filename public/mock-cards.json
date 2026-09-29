@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "titulo": "Radio Memory lança novo módulo de gestão",
+    "subtitulo": "Novidade promete agilizar o fluxo de atendimento nas clínicas",
+    "corpo": "<p>Texto do post com <strong>formatação</strong>.</p><p>Segundo parágrafo.</p>",
+    "urlPost": "https://site.radiomemory.com.br/noticia-1",
+    "imgUrl": "https://picsum.photos/seed/1/800/450",
+    "autor": "francis@radiomemory.com.br",
+    "status": 1,
+    "data": "2026-09-20T14:30:00.000Z",
+    "categoria": "blog",
+    "videoUrl": null,
+    "data_fixo": "2026-12-31T00:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "titulo": "Webinar: integração JABRO na prática",
+    "subtitulo": "Sessão ao vivo demonstra a configuração passo a passo",
+    "corpo": "<p>Conteúdo do webinar.</p><script>alert('xss')</script><img src=x onerror=\"alert('xss')\">",
+    "urlPost": "https://site.radiomemory.com.br/noticia-2",
+    "imgUrl": "https://picsum.photos/seed/2/800/450",
+    "autor": "reis@radiomemory.com.br",
+    "status": 1,
+    "data": "2026-09-25T09:00:00.000Z",
+    "categoria": "eventos",
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "data_fixo": null
+  }
+]
