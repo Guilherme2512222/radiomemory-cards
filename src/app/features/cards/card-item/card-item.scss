@@ -1,4 +1,17 @@
+.card-link {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+
+  &:focus-visible {
+    outline: 2px solid #1d4ed8;
+    outline-offset: 2px;
+    border-radius: 12px;
+  }
+}
 .card {
+
   display: flex;
   flex-direction: column;
   background: #fff;

@@ -1,29 +1,31 @@
-<article class="card">
-  @if (card().imgUrl) {
-    <img
-      class="card__imagem"
-      [src]="card().imgUrl"
-      [alt]="card().titulo"
-      loading="lazy"
-    />
-  }
+<a class="card-link" [routerLink]="['/card', card().id]">
+  <article class="card">
+    @if (card().imgUrl) {
+      <img
+        class="card__imagem"
+        [src]="card().imgUrl"
+        [alt]="card().titulo"
+        loading="lazy"
+      />
+    }
 
-  <div class="card__conteudo">
-    <div class="card__meta">
-      <span class="card__categoria">{{ card().categoria }}</span>
-      @if (fixado()) {
-        <span class="card__selo">Fixado</span>
-      }
+    <div class="card__conteudo">
+      <div class="card__meta">
+        <span class="card__categoria">{{ card().categoria }}</span>
+        @if (fixado()) {
+          <span class="card__selo">Fixado</span>
+        }
+      </div>
+
+      <h2 class="card__titulo">{{ card().titulo }}</h2>
+      <p class="card__subtitulo">{{ card().subtitulo }}</p>
+
+      <footer class="card__rodape">
+        <time [attr.datetime]="card().data">
+          {{ card().data | date: 'dd/MM/yyyy HH:mm' }}
+        </time>
+        <span class="card__autor">{{ card().autor }}</span>
+      </footer>
     </div>
-
-    <h2 class="card__titulo">{{ card().titulo }}</h2>
-    <p class="card__subtitulo">{{ card().subtitulo }}</p>
-
-    <footer class="card__rodape">
-      <time [attr.datetime]="card().data">
-        {{ card().data | date: 'dd/MM/yyyy HH:mm' }}
-      </time>
-      <span class="card__autor">{{ card().autor }}</span>
-    </footer>
-  </div>
-</article>
+  </article>
+</a>

@@ -1,0 +1,82 @@
+<div class="detalhe">
+  <a routerLink="/" class="detalhe__voltar">← Voltar para a listagem</a>
+
+  @if (carregando()) {
+    <div class="detalhe__skeleton" aria-busy="true" aria-label="Carregando publicação">
+      <div class="detalhe__skeleton-linha detalhe__skeleton-linha--titulo"></div>
+      <div class="detalhe__skeleton-linha detalhe__skeleton-linha--curta"></div>
+      <div class="detalhe__skeleton-imagem"></div>
+      <div class="detalhe__skeleton-linha"></div>
+      <div class="detalhe__skeleton-linha"></div>
+      <div class="detalhe__skeleton-linha detalhe__skeleton-linha--curta"></div>
+    </div>
+  }
+
+  @else if (erro()) {
+    <div class="detalhe__aviso" role="alert">
+      <p>{{ erro() }}</p>
+      <button type="button" class="detalhe__botao" (click)="carregar()">
+        Tentar novamente
+      </button>
+    </div>
+  }
+
+  @else if (card(); as publicacao) {
+    <article>
+      <header class="detalhe__cabecalho">
+        <div class="detalhe__meta">
+          <span class="detalhe__categoria">{{ publicacao.categoria }}</span>
+          @if (fixado()) {
+            <span class="detalhe__selo">Fixado</span>
+          }
+        </div>
+
+        <h1 class="detalhe__titulo">{{ publicacao.titulo }}</h1>
+        <p class="detalhe__subtitulo">{{ publicacao.subtitulo }}</p>
+
+        <div class="detalhe__info">
+          <time [attr.datetime]="publicacao.data">
+            {{ publicacao.data | date: 'dd/MM/yyyy HH:mm' }}
+          </time>
+          <span>{{ publicacao.autor }}</span>
+        </div>
+      </header>
+
+      @if (publicacao.imgUrl) {
+        <img
+          class="detalhe__imagem"
+          [src]="publicacao.imgUrl"
+          [alt]="publicacao.titulo"
+        />
+      }
+
+      <!-- Vídeo em container com proporção fixa, mantendo o player
+           responsivo em qualquer largura de tela. -->
+      @if (videoSeguro(); as video) {
+        <div class="detalhe__video">
+          <iframe
+            [src]="video"
+            title="Vídeo da publicação"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      }
+
+      <!-- Conteúdo sanitizado com DOMPurify antes da inserção no DOM. -->
+      <div class="detalhe__corpo" [innerHTML]="corpoSanitizado()"></div>
+
+      <footer class="detalhe__rodape">
+        <a
+          [href]="publicacao.urlPost"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="detalhe__link-externo"
+        >
+          Ler no site
+        </a>
+      </footer>
+    </article>
+  }
+</div>
