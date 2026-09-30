@@ -1,0 +1,117 @@
+.pagina {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+
+  &__cabecalho {
+    margin-bottom: 24px;
+
+    h1 {
+      font-size: 28px;
+      color: #111827;
+      margin: 0;
+    }
+  }
+}
+
+.secao {
+  margin-bottom: 40px;
+
+  &__titulo {
+    font-size: 18px;
+    color: #374151;
+    margin: 0 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+}
+
+// Grade responsiva: a quantidade de colunas se ajusta à largura disponível,
+// sem necessidade de media queries.
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.aviso {
+  padding: 24px;
+  text-align: center;
+  color: #6b7280;
+  background: #f9fafb;
+  border-radius: 12px;
+
+  &--erro {
+    color: #991b1b;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+  }
+}
+
+.botao {
+  margin-top: 12px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: #1d4ed8;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: #1e40af;
+  }
+}
+
+// ---- Skeleton ----
+// Reproduz a estrutura do card real para que a transição entre
+// carregamento e conteúdo não desloque o layout.
+
+.skeleton {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+
+  &__imagem {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  &__conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  &__linha {
+    height: 12px;
+    border-radius: 6px;
+
+    &--curta {
+      width: 55%;
+    }
+  }
+
+  &__imagem,
+  &__linha {
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+  }
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+// Respeita a preferência do sistema por movimento reduzido.
+@media (prefers-reduced-motion: reduce) {
+  .skeleton__imagem,
+  .skeleton__linha {
+    animation: none;
+  }
+}

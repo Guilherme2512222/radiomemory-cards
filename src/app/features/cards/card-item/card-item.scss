@@ -1,0 +1,92 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+  height: 100%;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
+    transform: translateY(-2px);
+  }
+
+  &__imagem {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #f3f4f6;
+  }
+
+  &__conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    flex: 1;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__categoria {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #1d4ed8;
+    background: #eff6ff;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  &__selo {
+    font-size: 12px;
+    font-weight: 600;
+    color: #92400e;
+    background: #fef3c7;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  &__titulo {
+    font-size: 18px;
+    line-height: 1.3;
+    margin: 0;
+    color: #111827;
+  }
+
+  &__subtitulo {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #4b5563;
+    margin: 0;
+    // Limita a 3 linhas para manter os cards com altura consistente
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__rodape {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 12px;
+    font-size: 12px;
+    color: #6b7280;
+    border-top: 1px solid #f3f4f6;
+  }
+
+  &__autor {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

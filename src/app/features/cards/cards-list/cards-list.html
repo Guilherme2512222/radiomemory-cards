@@ -1,1 +1,63 @@
-<p>cards-list works!</p>
+
+<div class="pagina">
+  <header class="pagina__cabecalho">
+    <h1>Notícias e publicações</h1>
+  </header>
+
+  <!-- Estado de carregamento: skeletons ocupam o mesmo espaço dos cards reais,
+       evitando o deslocamento do layout quando os dados chegam. -->
+  @if (carregando()) {
+    <div class="grade" aria-busy="true" aria-label="Carregando publicações">
+      @for (item of [1,2,3,4,5,6]; track item) {
+        <div class="skeleton">
+          <div class="skeleton__imagem"></div>
+          <div class="skeleton__conteudo">
+            <div class="skeleton__linha skeleton__linha--curta"></div>
+            <div class="skeleton__linha"></div>
+            <div class="skeleton__linha"></div>
+            <div class="skeleton__linha skeleton__linha--curta"></div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Estado de erro: mensagem clara e ação de recuperação. -->
+  @else if (erro()) {
+    <div class="aviso aviso--erro" role="alert">
+      <p>{{ erro() }}</p>
+      <button type="button" class="botao" (click)="carregar()">
+        Tentar novamente
+      </button>
+    </div>
+  }
+
+  @else {
+    @if (fixados().length > 0) {
+      <section class="secao">
+        <h2 class="secao__titulo">Fixados</h2>
+        <div class="grade">
+          @for (card of fixados(); track card.id) {
+            <app-card-item [card]="card" [fixado]="true" />
+          }
+        </div>
+      </section>
+    }
+
+    <section class="secao">
+      @if (fixados().length > 0) {
+        <h2 class="secao__titulo">Demais publicações</h2>
+      }
+
+      @if (naoFixados().length > 0) {
+        <div class="grade">
+          @for (card of naoFixados(); track card.id) {
+            <app-card-item [card]="card" />
+          }
+        </div>
+      } @else {
+        <p class="aviso">Nenhuma publicação encontrada.</p>
+      }
+    </section>
+  }
+</div>
