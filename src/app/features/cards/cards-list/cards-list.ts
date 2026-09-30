@@ -5,17 +5,11 @@ import { CardItem } from '../card-item/card-item';
 import {
   apenasPublicados,
   sortCards,
-  isPinned
+  isPinned,
+  filterCards,
+  extractCategories
 } from '../../../core/rules/card-rules';
 
-/**
- * Página de listagem de cards.
- *
- * Concentra o estado da tela (carregando / erro / dados) e delega:
- * - a busca dos dados ao CardsService;
- * - as regras de negócio às funções puras de core/rules;
- * - a exibição de cada card ao CardItem.
- */
 @Component({
   selector: 'app-cards-list',
   imports: [CardItem],
@@ -25,34 +19,48 @@ import {
 export class CardsList implements OnInit {
   private readonly cardsService = inject(CardsService);
 
-  /** Cards publicados, já ordenados conforme a regra de negócio. */
-  readonly cards = signal<Card[]>([]);
+  /** Todos os cards publicados, já ordenados. Não muda com os filtros. */
+  private readonly todosCards = signal<Card[]>([]);
 
   readonly carregando = signal(true);
   readonly erro = signal<string | null>(null);
 
-  /**
-   * Momento de referência para a regra de pin.
-   * Fixado no carregamento para que a ordenação não mude durante a
-   * navegação — a regra define a ordem "uma única vez".
-   */
+  /** Filtros ativos. */
+  readonly categoriaSelecionada = signal<string>('');
+  readonly termoBusca = signal<string>('');
+
   private readonly agora = new Date();
 
-  /** Cards fixados, exibidos em destaque antes da listagem geral. */
-  readonly fixados = computed(() =>
-    this.cards().filter((card) => isPinned(card, this.agora))
+  /** Categorias extraídas dos dados, para montar o seletor. */
+  readonly categorias = computed(() => extractCategories(this.todosCards()));
+
+  /** Cards após a aplicação dos filtros. */
+  private readonly cardsFiltrados = computed(() =>
+    filterCards(this.todosCards(), {
+      categoria: this.categoriaSelecionada(),
+      busca: this.termoBusca()
+    })
   );
 
-  /** Demais cards, na ordem definida pela regra de negócio. */
+  readonly fixados = computed(() =>
+    this.cardsFiltrados().filter((card) => isPinned(card, this.agora))
+  );
+
   readonly naoFixados = computed(() =>
-    this.cards().filter((card) => !isPinned(card, this.agora))
+    this.cardsFiltrados().filter((card) => !isPinned(card, this.agora))
+  );
+
+  /** Total exibido, usado no contador de resultados. */
+  readonly totalExibido = computed(() => this.cardsFiltrados().length);
+
+  readonly temFiltroAtivo = computed(
+    () => this.categoriaSelecionada() !== '' || this.termoBusca() !== ''
   );
 
   ngOnInit(): void {
     this.carregar();
   }
 
-  /** Busca os cards na API e aplica filtro de status e ordenação. */
   carregar(): void {
     this.carregando.set(true);
     this.erro.set(null);
@@ -60,7 +68,7 @@ export class CardsList implements OnInit {
     this.cardsService.getTodosCards().subscribe({
       next: (resposta) => {
         const publicados = apenasPublicados(resposta);
-        this.cards.set(sortCards(publicados, this.agora));
+        this.todosCards.set(sortCards(publicados, this.agora));
         this.carregando.set(false);
       },
       error: () => {
@@ -68,5 +76,18 @@ export class CardsList implements OnInit {
         this.carregando.set(false);
       }
     });
+  }
+
+  aoBuscar(evento: Event): void {
+    this.termoBusca.set((evento.target as HTMLInputElement).value);
+  }
+
+  aoSelecionarCategoria(evento: Event): void {
+    this.categoriaSelecionada.set((evento.target as HTMLSelectElement).value);
+  }
+
+  limparFiltros(): void {
+    this.categoriaSelecionada.set('');
+    this.termoBusca.set('');
   }
 }

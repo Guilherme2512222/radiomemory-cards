@@ -3,7 +3,49 @@
   <header class="pagina__cabecalho">
     <h1>Notícias e publicações</h1>
   </header>
+    <!-- Filtros: aplicados em memória sobre os dados já carregados,
+       sem novas requisições à API. -->
+  <div class="filtros">
+    <div class="filtros__campo">
+      <label for="busca" class="filtros__rotulo">Buscar</label>
+      <input
+        id="busca"
+        type="search"
+        class="filtros__input"
+        placeholder="Buscar por título ou subtítulo"
+        [value]="termoBusca()"
+        (input)="aoBuscar($event)"
+      />
+    </div>
 
+    <div class="filtros__campo">
+      <label for="categoria" class="filtros__rotulo">Categoria</label>
+      <select
+        id="categoria"
+        class="filtros__select"
+        [value]="categoriaSelecionada()"
+        (change)="aoSelecionarCategoria($event)"
+      >
+        <option value="">Todas</option>
+        @for (categoria of categorias(); track categoria) {
+          <option [value]="categoria">{{ categoria }}</option>
+        }
+      </select>
+    </div>
+
+    @if (temFiltroAtivo()) {
+      <button type="button" class="filtros__limpar" (click)="limparFiltros()">
+        Limpar filtros
+      </button>
+    }
+  </div>
+
+  @if (!carregando() && !erro() && temFiltroAtivo()) {
+    <p class="filtros__resultado">
+      {{ totalExibido() }}
+      {{ totalExibido() === 1 ? 'publicação encontrada' : 'publicações encontradas' }}
+    </p>
+  }
   <!-- Estado de carregamento: skeletons ocupam o mesmo espaço dos cards reais,
        evitando o deslocamento do layout quando os dados chegam. -->
   @if (carregando()) {
